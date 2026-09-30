@@ -3,8 +3,8 @@
 #  完整参数说明: https://github.com/adityatelange/hugo-PaperMod/wiki/Installation
 # =====================================================================
 
-# [改我] 用户名：把 USERNAME 换成你的 GitHub 用户名（全小写）
-baseURL: "https://USERNAME.github.io/"
+# 站点地址（User Pages 约定）
+baseURL: "https://adfnekc.github.io/"
 title: "我的博客"
 locale: "zh-CN"
 defaultContentLanguage: "zh"
@@ -42,7 +42,7 @@ params:
   description: "记录技术、思考与生活。"
   keywords: [Blog, Hugo, GitHub Pages]
   # [改我] 作者名
-  author: "你的名字"
+  author: "adfnekc"
 
   # ---------- 外观 ----------
   defaultTheme: auto          # auto / light / dark
@@ -73,9 +73,8 @@ params:
 
   # ---------- 社交图标 ----------
   socialIcons:
-    # [改我] 换成你自己的链接
     - name: github
-      url: "https://github.com/USERNAME"
+      url: "https://github.com/adfnekc"
     - name: rss
       url: "index.xml"
 
@@ -87,8 +86,7 @@ params:
 
   # ---------- 「建议修改」按钮，直接跳转到 GitHub 上的 md 文件 ----------
   editPost:
-    # [改我] 仓库地址
-    URL: "https://github.com/USERNAME/USERNAME.github.io/tree/main/content"
+    URL: "https://github.com/adfnekc/adfnekc.github.io/tree/main/content"
     Text: "在 GitHub 上编辑"
     appendFilePath: true
 
@@ -108,7 +106,7 @@ params:
   #  获取下面 4 个值的方法见 README.md「开启评论」一节
   # =====================================================================
   giscus:
-    repo: "USERNAME/USERNAME.github.io"   # [改我] 仓库 owner/repo
+    repo: "adfnekc/adfnekc.github.io"       # [改我] 仓库 owner/repo
     repoId: "R_kgDOxxxxxxx"               # [改我] 仓库 ID
     category: "Announcements"             # [改我] Discussions 分类名
     categoryId: "DIC_kwDOxxxxxxxx"        # [改我] 分类 ID

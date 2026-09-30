@@ -3,7 +3,7 @@ title: "Hello World：我的第一篇博客"
 date: 2025-01-01T10:00:00+08:00
 lastmod: 2025-01-01T10:00:00+08:00
 draft: false
-author: "你的名字"
+author: "adfnekc"
 summary: "这是站点初始化时自带的一篇示例文章，展示 PaperMod 主题的排版、代码高亮、目录与评论区效果。"
 description: "示例文章：展示 PaperMod 主题与 giscus 评论区。"
 categories: ["随笔"]

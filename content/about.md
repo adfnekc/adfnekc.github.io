@@ -18,5 +18,4 @@ comments: false
 
 ## 联系我
 
-- GitHub：[@你的用户名](https://github.com/USERNAME)
-- Email：you@example.com
+- GitHub：[@adfnekc](https://github.com/adfnekc)

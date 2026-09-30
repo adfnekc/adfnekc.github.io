@@ -2,7 +2,7 @@
 title: "Markdown 写作速查"
 date: 2025-01-02T10:00:00+08:00
 draft: false
-author: "你的名字"
+author: "adfnekc"
 summary: "写博客会用到的 Markdown 语法与 Hugo 专属扩展（shortcode）速查表。"
 categories: ["教程"]
 tags: ["Markdown", "Hugo"]
