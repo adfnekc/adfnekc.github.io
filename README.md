@@ -78,91 +78,78 @@ blog/
 
 ---
 
-## 三、上线步骤（一次性，约 10 分钟）
+## 三、上线步骤（已完成 ✅ / 剩余 1 步 ⏳）
 
-### 步骤 1：创建仓库
+当前状态：
 
-在 GitHub 新建仓库，名字必须是：
+| 步骤 | 状态 | 结果 |
+| --- | --- | --- |
+| 1. 创建仓库 `adfnekc.github.io`（Public） | ✅ 已完成 | <https://github.com/adfnekc/adfnekc.github.io> |
+| 2. 推送代码（含 PaperMod 子模块） | ✅ 已完成 | 分支 `main` |
+| 3. 开启 Pages 并设为 **GitHub Actions** 构建 | ✅ 已完成 | `build_type: workflow` |
+| 4. 替换占位符 `USERNAME` | ✅ 已完成 | 已按 `adfnekc` 填好 `hugo.yaml` / `about.md` |
+| 5. 开启 Discussions | ✅ 已完成 | 已有 6 个默认分类 |
+| 6. 取得 `repoId` / `categoryId` 并填入配置 | ✅ 已完成 | `R_kgDOU0Kckg` / `DIC_kwDOU0Kcks4DGspC` |
+| 7. 首次部署 | ✅ 已完成 | <https://adfnekc.github.io/> 返回 200 |
+| **8. 安装 giscus App** | ⏳ **需要你手动完成** | 见下 |
 
-```
-<你的用户名>.github.io
-```
+### ⏳ 唯一剩下的一步：安装 giscus App
 
-> 例：用户名 `alice` → 仓库名 `alice.github.io`。这是 GitHub 的「User Pages」约定，
-> 这样站点地址就是干净的 `https://alice.github.io/`，不需要任何子路径配置。
-> 仓库设为 **Public**（否则 Pages 与评论都不可用）。
+giscus 是一个 GitHub App，**首次安装必须由仓库所有者在浏览器里点确认**，命令行无法代劳。
 
-### 步骤 2：推送本地代码
+1. 打开 <https://github.com/apps/giscus>
+2. 点 **Install**
+3. 选择 **Only select repositories** → 勾选 `adfnekc.github.io`
+4. 点 **Install**（会要求输入 GitHub 密码确认）
+
+装完后打开任意一篇文章（例如 <https://adfnekc.github.io/posts/hello-world/>），
+页面底部应出现评论区；用 GitHub 账号登录即可发言。
+
+> 验证是否装好：刷新文章页，若评论区提示 `giscus is not installed on this repository`，
+> 说明第 3 步的仓库没勾选上，重新去 <https://github.com/apps/giscus> 的
+> **Configure** 里补勾即可。
+>
+> 评论会以讨论帖的形式出现在
+> <https://github.com/adfnekc/adfnekc.github.io/discussions> 的 **Announcements** 分类下，
+> 每篇文章一个帖，之后你在 GitHub 上就能直接回复、编辑、锁定或删除评论。
+
+### 参考：这些步骤当时是怎么做的
+
+<details>
+<summary>展开查看（供换仓库/重装时复用）</summary>
 
 ```bash
-cd /home/upi/Project/ai_project/blog
-git add .
-git commit -m "chore: 初始化 Hugo 博客"
-git remote add origin git@github.com:<你的用户名>/<你的用户名>.github.io.git
+# 1) 创建仓库
+gh repo create <用户名>.github.io --public --disable-wiki
+
+# 2) 推送
+git remote add origin https://github.com/<用户名>/<用户名>.github.io.git
 git push -u origin main
+
+# 3) 开启 Pages，并指定用 GitHub Actions 构建（而不是 Deploy from a branch）
+gh api -X POST repos/<用户名>/<用户名>.github.io/pages -f build_type=workflow
+
+# 4) 开启 Discussions
+RID=$(gh api graphql -f query='{repository(owner:"<用户名>",name:"<用户名>.github.io"){id}}' --jq .data.repository.id)
+gh api graphql -f query="mutation{updateRepository(input:{repositoryId:\"$RID\",hasDiscussionsEnabled:true}){repository{hasDiscussionsEnabled}}}"
+
+# 5) 取 repoId 与各分类 ID
+gh api graphql -f query='{repository(owner:"<用户名>",name:"<用户名>.github.io"){id discussionCategories(first:20){nodes{id name}}}}'
+
+# 6) 查看部署状态
+gh run list --limit 5
+gh run watch <run-id> --exit-status
+gh api repos/<用户名>/<用户名>.github.io/pages --jq '{build_type,status,html_url}'
 ```
 
-> 注意 `themes/PaperMod` 是子模块，`git add .` 会同时提交 `.gitmodules` 与 gitlink 记录。
-> Actions 里的 `submodules: recursive` 会把它拉下来，不需要额外操作。
+> 仓库名必须是 `<用户名>.github.io` 才能得到干净的根域名；
+> 用普通仓库名会变成 `https://<用户名>.github.io/<仓库名>/`，需要额外配 `baseURL`。
+>
+> `params.giscus.category` 用 **Announcements** 是 giscus 官方推荐：该分类只有维护者
+> 能新建讨论帖，而 giscus App 有写权限，所以机器人能自动建帖、普通用户只能评论，
+> 天然挡掉「用垃圾帖刷屏」。
 
-### 步骤 3：开启 Pages
-
-仓库 → **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
-
-推送后 **Actions** 标签页能看到 `Deploy Hugo site to Pages` 流程跑完，
-访问 `https://<你的用户名>.github.io/` 即可看到站点。
-
-### 步骤 4：替换占位符
-
-全局搜索替换 `USERNAME`（共 5 处，都在 `hugo.yaml` 和 `content/about.md`）：
-
-| 文件 | 字段 |
-| --- | --- |
-| `hugo.yaml` | `baseURL` |
-| `hugo.yaml` | `params.author`、`params.description`、`params.title` |
-| `hugo.yaml` | `params.socialIcons[].url` |
-| `hugo.yaml` | `params.editPost.URL` |
-| `content/about.md` | GitHub 链接、邮箱 |
-
-改完 `git push`，站点会自动重建。
-
-### 步骤 5：开启评论（giscus）
-
-1. **开启 Discussions**：仓库 → **Settings → General → Features** → 勾选 **Discussions**。
-2. **新建分类**：仓库 → **Discussions → Categories**，确认存在 `Announcements`
-   （默认自带；也可以新建一个 `Comments` 分类）。
-3. **安装 giscus App**：访问 <https://github.com/apps/giscus> → **Install** →
-   授权给该仓库。
-4. **获取 ID**：打开 <https://giscus.app/zh-CN>，在「仓库」输入框填
-   `<你的用户名>/<你的用户名>.github.io`，选择刚确认的分类，页面会给出类似：
-
-   ```
-   <script src="https://giscus.app/client.js"
-           data-repo="alice/alice.github.io"
-           data-repo-id="R_kgDOLxxxxxxxx"
-           data-category="Announcements"
-           data-category-id="DIC_kwDOLxxxxxxxx"
-           ...>
-   ```
-
-   把 `data-repo-id` 和 `data-category-id` 两个值抄下来。
-
-5. **填入 `hugo.yaml`**：
-
-   ```yaml
-   params:
-     giscus:
-       repo: "alice/alice.github.io"
-       repoId: "R_kgDOLxxxxxxxx"        # ← 粘贴
-       category: "Announcements"
-       categoryId: "DIC_kwDOLxxxxxxxx"  # ← 粘贴
-   ```
-
-6. `git push`。评论即刻生效。
-
-> 未填 ID 时，文章底部会显示一段「评论区尚未启用」的提示，不会报错，方便你先上线再慢慢配。
-
----
+</details>
 
 ## 四、日常写作
 
