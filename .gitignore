@@ -1,0 +1,17 @@
+# Hugo 构建产物
+/public/
+/resources/_gen/
+/hugo_stats.json
+.hugo_build.lock
+
+# macOS
+.DS_Store
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# Node（如果用 npx 跑工具链）
+node_modules/
+package-lock.json

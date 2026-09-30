@@ -1,0 +1,70 @@
+{{- /*
+  giscus 评论区（基于 GitHub Discussions）
+  配置项在 hugo.yaml 的 params.giscus 里，无需改动本文件。
+  官方参数说明: https://giscus.app/zh-CN
+*/ -}}
+{{- $g := site.Params.giscus -}}
+{{- $enabled := and site.Params.comments $g.repo $g.repoId (not (strings.Contains $g.repoId "xxxx")) -}}
+
+<div class="comments" id="comments">
+  <h2 class="comments-title">评论</h2>
+
+  {{- if $enabled }}
+  <script id="giscus-client" src="https://giscus.app/client.js"
+          data-repo="{{ $g.repo }}"
+          data-repo-id="{{ $g.repoId }}"
+          data-category="{{ $g.category }}"
+          data-category-id="{{ $g.categoryId }}"
+          data-mapping="{{ $g.mapping | default "pathname" }}"
+          data-strict="{{ $g.strict | default "0" }}"
+          data-reactions-enabled="{{ $g.reactionsEnabled | default "1" }}"
+          data-emit-metadata="{{ $g.emitMetadata | default "0" }}"
+          data-input-position="{{ $g.inputPosition | default "bottom" }}"
+          data-theme="{{ $g.theme | default "preferred_color_scheme" }}"
+          data-lang="{{ $g.lang | default "zh-CN" }}"
+          data-loading="{{ $g.loading | default "lazy" }}"
+          crossorigin="anonymous"
+          async>
+  </script>
+  {{- else }}
+  <p class="comments-hint">
+    评论区尚未启用：请先在 <code>hugo.yaml</code> 的 <code>params.giscus</code> 中填写
+    <code>repoId</code> 与 <code>categoryId</code>（获取方式见 README.md）。
+  </p>
+  {{- end }}
+</div>
+
+{{- /* 跟随 PaperMod 的明暗主题切换，同步 giscus 配色 */ -}}
+{{- if $enabled }}
+<script>
+  (function () {
+    function giscusTheme() {
+      var t = document.documentElement.dataset.theme;
+      if (t === 'dark') return 'dark';
+      if (t === 'light') return 'light';
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+    // 在 giscus 外部脚本（async）执行前同步好初始主题，避免闪烁
+    var el = document.getElementById('giscus-client');
+    if (el) el.setAttribute('data-theme', giscusTheme());
+
+    function send() {
+      var frame = document.querySelector('iframe.giscus-frame');
+      if (!frame || !frame.contentWindow) return;
+      frame.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: giscusTheme() } } },
+        'https://giscus.app'
+      );
+    }
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) toggle.addEventListener('click', function () { setTimeout(send, 0); });
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', send);
+    }
+    // 首次加载时按当前主题初始化
+    window.addEventListener('load', function () { setTimeout(send, 500); });
+  })();
+</script>
+{{- end }}

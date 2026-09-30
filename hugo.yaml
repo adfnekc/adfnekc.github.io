@@ -1,0 +1,177 @@
+# =====================================================================
+#  站点配置 —— 只需要改下面标注了 [改我] 的地方
+#  完整参数说明: https://github.com/adityatelange/hugo-PaperMod/wiki/Installation
+# =====================================================================
+
+# [改我] 用户名：把 USERNAME 换成你的 GitHub 用户名（全小写）
+baseURL: "https://USERNAME.github.io/"
+title: "我的博客"
+locale: "zh-CN"
+defaultContentLanguage: "zh"
+theme: "PaperMod"
+
+enableRobotsTXT: true
+enableEmoji: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+# 分页：每页文章数
+pagination:
+  pagerSize: 10
+
+# 让首页同时输出 RSS 与 JSON（JSON 供站内搜索使用）
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+taxonomies:
+  tag: tags
+  category: categories
+
+params:
+  env: production
+  title: "我的博客"
+  # [改我] 站点简介，会出现在首页与 SEO 描述里
+  description: "记录技术、思考与生活。"
+  keywords: [Blog, Hugo, GitHub Pages]
+  # [改我] 作者名
+  author: "你的名字"
+
+  # ---------- 外观 ----------
+  defaultTheme: auto          # auto / light / dark
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: true
+  ShowRssButtonInSectionTermList: true
+  UseHugoToc: true
+  showtoc: true               # 文章页默认显示目录
+  tocopen: false
+  disableSpecial1stPost: false
+  disableScrollToTop: false
+  hidemeta: false
+  hideSummary: false
+  comments: true              # 全局开启评论（由 layouts/_partials/comments.html 渲染）
+
+  # ---------- 首页文案 ----------
+  homeInfoParams:
+    Title: "你好 👋"
+    Content: >
+      这里是我的博客，文章全部以 Markdown 写在 GitHub 仓库里。
+
+  # 首页显示为「个人信息卡」时可改成 profileMode（见文件末尾注释）
+
+  # ---------- 社交图标 ----------
+  socialIcons:
+    # [改我] 换成你自己的链接
+    - name: github
+      url: "https://github.com/USERNAME"
+    - name: rss
+      url: "index.xml"
+
+  # ---------- 封面图默认行为 ----------
+  cover:
+    hidden: false
+    hiddenInList: true
+    hiddenInSingle: false
+
+  # ---------- 「建议修改」按钮，直接跳转到 GitHub 上的 md 文件 ----------
+  editPost:
+    # [改我] 仓库地址
+    URL: "https://github.com/USERNAME/USERNAME.github.io/tree/main/content"
+    Text: "在 GitHub 上编辑"
+    appendFilePath: true
+
+  # ---------- 站内搜索（Fuse.js，纯前端） ----------
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    limit: 10
+    keys: ["title", "permalink", "summary", "content"]
+
+  # =====================================================================
+  #  giscus 评论配置 —— 用 GitHub Discussions 存评论
+  #  获取下面 4 个值的方法见 README.md「开启评论」一节
+  # =====================================================================
+  giscus:
+    repo: "USERNAME/USERNAME.github.io"   # [改我] 仓库 owner/repo
+    repoId: "R_kgDOxxxxxxx"               # [改我] 仓库 ID
+    category: "Announcements"             # [改我] Discussions 分类名
+    categoryId: "DIC_kwDOxxxxxxxx"        # [改我] 分类 ID
+    mapping: "pathname"                   # 一个页面 = 一个讨论帖
+    strict: "0"
+    reactionsEnabled: "1"
+    emitMetadata: "0"
+    inputPosition: "top"
+    lang: "zh-CN"
+    loading: "lazy"
+
+# ---------- 顶部导航 ----------
+menu:
+  main:
+    - identifier: posts
+      name: 文章
+      url: /posts/
+      weight: 10
+    - identifier: archives
+      name: 归档
+      url: /archives/
+      weight: 20
+    - identifier: search
+      name: 搜索
+      url: /search/
+      weight: 30
+    - identifier: categories
+      name: 分类
+      url: /categories/
+      weight: 40
+    - identifier: about
+      name: 关于
+      url: /about/
+      weight: 50
+
+# 主题要求 Hugo extended 版本（Sass 编译）
+module:
+  hugoVersion:
+    extended: true
+    min: "0.146.0"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true   # 允许 md 里直接写 HTML
+  highlight:
+    noClasses: false
+    lineNos: false
+
+# =====================================================================
+#  可选：把首页从「简介 + 文章列表」改成「头像个人卡片」，
+#  把上面 homeInfoParams 注释掉，改用下面这段：
+# =====================================================================
+# params:
+#   profileMode:
+#     enabled: true
+#     title: "我的博客"
+#     subtitle: "记录技术、思考与生活"
+#     imageUrl: "avatar.png"      # 放到 static/ 目录
+#     imageWidth: 120
+#     imageHeight: 120
+#     buttons:
+#       - name: 文章
+#         url: /posts/
+#       - name: 关于
+#         url: /about/
