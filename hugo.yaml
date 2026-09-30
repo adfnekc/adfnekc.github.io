@@ -106,10 +106,10 @@ params:
   #  获取下面 4 个值的方法见 README.md「开启评论」一节
   # =====================================================================
   giscus:
-    repo: "adfnekc/adfnekc.github.io"       # [改我] 仓库 owner/repo
-    repoId: "R_kgDOxxxxxxx"               # [改我] 仓库 ID
-    category: "Announcements"             # [改我] Discussions 分类名
-    categoryId: "DIC_kwDOxxxxxxxx"        # [改我] 分类 ID
+    repo: "adfnekc/adfnekc.github.io"
+    repoId: "R_kgDOU0Kckg"                     # 已通过 gh api 获取
+    category: "Announcements"                 # giscus 官方推荐：仅维护者可建帖，天然防垃圾
+    categoryId: "DIC_kwDOU0Kcks4DGspC"        # 已通过 gh api 获取
     mapping: "pathname"                   # 一个页面 = 一个讨论帖
     strict: "0"
     reactionsEnabled: "1"
